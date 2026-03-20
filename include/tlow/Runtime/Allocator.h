@@ -1,54 +1,42 @@
 #pragma once
 
 #include <cstddef>
-#include <memory>
-#include <new>
+#include <memory_resource>
+#include "Arena.h"
 
 namespace tlow::runtime {
 
-class Arena {
+// subclass pmr::memory_resource (actually handles alignment)
+// rather than implementing allocator interface
+
+// NOTE: allocation should be off of the critical path (vtable dispatch)
+class ArenaResource : public std::pmr::memory_resource {
+
 public:
+    ArenaResource() = delete;
+    explicit ArenaResource(Arena* arena) : arena_(arena) {}
 
-    Arena() = delete;
+    ArenaResource(const ArenaResource&) = default;
+    ArenaResource& operator=(const ArenaResource&) = default;
 
-    explicit Arena(std::size_t sz) 
-        : buf_(static_cast<char*>(::operator new(sz))), 
-          capacity_(sz), 
-          offset_(0) {}
+    ArenaResource(ArenaResource&&) = default;
+    ArenaResource& operator=(ArenaResource&&) = default;
 
-    Arena(const Arena&) = delete;
-    Arena& operator=(const Arena&) = delete;
-
-    Arena(Arena&&) = delete;
-    Arena& operator=(Arena&&) = delete;
-
-    ~Arena() {
-        ::operator delete(buf_);
-    }
-
-    // alloc mem of sz bytes with specified alignment
-    void* allocate(std::size_t sz, std::size_t align) {
-        std::size_t space = capacity_-offset_;
-        void* align_ptr = buf_ + offset_;
-
-        if (std::align(align, sz, align_ptr, space) == nullptr) {
-            throw std::bad_alloc();
-        }
-
-        offset_ = static_cast<char*>(align_ptr) - buf_ + sz;
-
-        return align_ptr;
-    }
-
-    void reset() {
-        offset_ = 0;
-    }
+    ~ArenaResource() = default;
 
 private:
-    char* buf_;
-    std::size_t offset_;
-    std::size_t capacity_;
-};
+    Arena* arena_;
 
+    void* do_allocate(std::size_t sz, std::size_t align) override {
+        return arena_->alloc_raw(sz, align);
+    }
+
+    // no-op (arena manages resource lifetimes)
+    void do_deallocate(void*, std::size_t, std::size_t) noexcept override {}
+
+    bool do_is_equal(const std::pmr::memory_resource& other) const noexcept override {
+        return this == &other;
+    }
+};
 
 }
