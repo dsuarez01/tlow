@@ -60,7 +60,7 @@ private:
 
 };
 
-int64_t num_elements(const Tensor& t);
+int64_t num_elems(const Tensor& t);
 std::size_t byte_size(const Tensor& t);
 std::size_t dtype_size(DType dtype);
 

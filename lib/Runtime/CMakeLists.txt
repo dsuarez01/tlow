@@ -1,8 +1,8 @@
 # define targets, point target to include dirs needed
 
 add_library(tlowRuntime
-    Allocator.cpp
     Graph.cpp
+    Optimizers.cpp
     Tensor.cpp
 )
 

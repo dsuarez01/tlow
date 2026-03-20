@@ -2,7 +2,8 @@
 
 #include <cstddef>
 #include <memory_resource>
-#include "Arena.h"
+
+#include "Regions.h"
 
 namespace tlow::runtime {
 
@@ -13,16 +14,8 @@ namespace tlow::runtime {
 class ArenaResource : public std::pmr::memory_resource {
 
 public:
-    ArenaResource() = delete;
+
     explicit ArenaResource(Arena* arena) : arena_(arena) {}
-
-    ArenaResource(const ArenaResource&) = default;
-    ArenaResource& operator=(const ArenaResource&) = default;
-
-    ArenaResource(ArenaResource&&) = default;
-    ArenaResource& operator=(ArenaResource&&) = default;
-
-    ~ArenaResource() = default;
 
 private:
     Arena* arena_;

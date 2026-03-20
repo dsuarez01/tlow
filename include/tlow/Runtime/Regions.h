@@ -11,22 +11,20 @@ namespace tlow::runtime {
 class Arena {
 public:
 
-    Arena() = delete;
-
     explicit Arena(std::size_t sz) 
         : buf_(static_cast<char*>(::operator new(sz))), 
           capacity_(sz) {}
+
+    ~Arena() {
+        call_dtors();
+        ::operator delete(buf_);
+    }
 
     Arena(const Arena&) = delete;
     Arena& operator=(const Arena&) = delete;
 
     Arena(Arena&&) = delete;
     Arena& operator=(Arena&&) = delete;
-
-    ~Arena() {
-        call_dtors();
-        ::operator delete(buf_);
-    }
 
     void* alloc_raw(std::size_t sz, std::size_t align) {
         auto [ptr, new_offset] = alloc(offset_, sz, align);
