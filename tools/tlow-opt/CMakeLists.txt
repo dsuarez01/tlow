@@ -4,6 +4,7 @@ add_executable(tlow-opt
 
 target_link_libraries(tlow-opt PRIVATE
     MLIROptLib
+    MLIRParser
     tlowCodegen
     tlowTransforms
 )

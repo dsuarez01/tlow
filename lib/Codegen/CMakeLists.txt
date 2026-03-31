@@ -3,7 +3,6 @@
 # for Common
 add_subdirectory(Common)
 add_library(tlowCodegen KernelRegistry.cpp)
-target_link_libraries(tlowCodegen PRIVATE tlowCodegenCommon)
 
 # for Targets
 option(TLOW_ENABLE_CPU  "Enable CPU backend"  ON)
@@ -23,5 +22,6 @@ if(TLOW_ENABLE_ASIC)
     target_link_libraries(tlowCodegen PRIVATE tlowCodegenASIC)
 endif()
 
+target_link_libraries(tlowCodegen PRIVATE tlowDialect tlowCodegenCommon)
 target_include_directories(tlowCodegen PUBLIC ${PROJECT_SOURCE_DIR}/include)
 target_include_directories(tlowCodegen PRIVATE ${MLIR_INCLUDE_DIRS})

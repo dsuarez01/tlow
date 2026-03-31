@@ -4,6 +4,12 @@ project(tlow VERSION 0.1 LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+execute_process(
+    COMMAND ${CMAKE_COMMAND} -E create_symlink
+        ${CMAKE_BINARY_DIR}/compile_commands.json
+        ${CMAKE_SOURCE_DIR}/compile_commands.json
+)
+
 set(LLVM_ENABLE_PROJECTS "mlir" CACHE STRING "")
 set(LLVM_TARGETS_TO_BUILD "X86;AArch64;NVPTX;AMDGPU" CACHE STRING "")
 set(LLVM_BUILD_TESTS OFF CACHE BOOL "" FORCE)
@@ -20,9 +26,6 @@ find_package(MLIR REQUIRED CONFIG HINTS ${CMAKE_BINARY_DIR}/lib/cmake/mlir)
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 find_package(OnnxRuntime REQUIRED)
 
-add_subdirectory(lib/Frontend)
-add_subdirectory(lib/Transforms)
-add_subdirectory(lib/Codegen)
-
-add_subdirectory(tools/tlow)
-add_subdirectory(tools/tlow-opt)
+add_subdirectory(include)
+add_subdirectory(lib)
+add_subdirectory(tools)
