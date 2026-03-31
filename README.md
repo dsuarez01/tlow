@@ -1,4 +1,4 @@
-# tlow: an MLIR-based neural network compiler
+# tlow: an MLIR-based transformer compiler
 
 As currently planned, tlow will be a JIT compiler that takes ONNX model subgraphs and lowers them to native code via MLIR. This project is integrated with ONNX Runtime as a custom runtime execution provider. Disclaimer: this is intended as an educational project.
 
