@@ -23,5 +23,3 @@ if(TLOW_ENABLE_ASIC)
 endif()
 
 target_link_libraries(tlowCodegen PRIVATE tlowDialect tlowCodegenCommon)
-target_include_directories(tlowCodegen PUBLIC ${PROJECT_SOURCE_DIR}/include)
-target_include_directories(tlowCodegen PRIVATE ${MLIR_INCLUDE_DIRS})

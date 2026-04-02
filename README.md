@@ -37,7 +37,9 @@ cmake .. -G Ninja \
          -DCMAKE_CXX_COMPILER=clang++ \
          -DCMAKE_C_COMPILER_LAUNCHER=ccache \
          -DCMAKE_CXX_COMPILER_LAUNCHER=ccache
-ninja [tlow] [tlow-opt]
+
+# install tlow tools (run from build directory)
+ninja install-tlow
 ```
 
 > **Note:** clang, ninja, and ccache strongly recommended, since first build takes a significant amount of time (due to building LLVM/MLIR from source).
