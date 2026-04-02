@@ -23,7 +23,7 @@ mkdir build && cd build
 cmake .. -DLLVM_ENABLE_PROJECTS="mlir" \
          -DLLVM_TARGETS_TO_BUILD="Native" \
          -DCMAKE_BUILD_TYPE=Release
-cmake --build . --target tlow
+cmake --build . --target install-tlow
 ```
 
 Recommended (faster):
@@ -45,3 +45,5 @@ ninja install-tlow
 > **Note:** clang, ninja, and ccache strongly recommended, since first build takes a significant amount of time (due to building LLVM/MLIR from source).
 
 > **Note:** `Native` auto-targets your current architecture. Add `NVPTX` or `AMDGPU` to `LLVM_TARGETS_TO_BUILD` if you need GPU codegen support.
+
+> **Note:** install-tlow installs to ~/.local/bin by default, ensure it is on PATH
