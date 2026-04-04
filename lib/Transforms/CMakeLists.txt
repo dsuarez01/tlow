@@ -1,5 +1,13 @@
-# define targets, point target to include dirs needed
+mlir_library(tlowTransforms
+  PatternRegistry.cpp
 
-add_library(tlowTransforms PatternRegistry.cpp)
+  LINK_LIBS PUBLIC
+    tlowDialect
+    MLIRLinalg
+    MLIRLinalgTransforms
+    MLIRFuncDialect
+    MLIRTensor
+    MLIRTransforms
+)
 
 target_link_libraries(tlowTransforms PRIVATE tlowDialect)
